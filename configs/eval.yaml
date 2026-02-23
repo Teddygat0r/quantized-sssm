@@ -1,0 +1,26 @@
+inherits: "model.yaml"
+
+eval_ppl:
+  enabled: true
+  dataset:
+    name: "wikitext"
+    config: "wikitext-2-raw-v1"
+    split: "test"
+    text_field: "text"
+    streaming: false
+    cache_dir: null
+  preprocessing:
+    seq_len: 2048
+    stride: 1024
+    drop_last: true
+    add_bos: false
+  dataloader:
+    batch_size: 1
+    num_workers: 0
+  runtime:
+    max_examples: null          # set e.g. 2000 for quick sanity runs; null = full split
+    amp_autocast: true          # use autocast for bf16/fp16
+    warmup_steps: 2
+  output:
+    metrics_file: "metrics.jsonl"
+    save_per_example: false

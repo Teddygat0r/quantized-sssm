@@ -1,0 +1,16 @@
+[project]
+name = "quantized-sssm"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "datasets",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "pyyaml",
+    "torch",
+    "tqdm",
+    "transformers",
+]

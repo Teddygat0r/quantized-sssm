@@ -1,0 +1,41 @@
+inherits: "model.yaml"
+
+eval_long_context:
+  enabled: true
+
+  sweep:
+    context_lengths: [2048, 4096, 8192, 16384, 32768]   # adjust to what fits VRAM
+    trials_per_length: 50
+
+  task:
+    type: "passkey_retrieval"
+    passkey:
+      key_length: 8                 # digits/characters
+      key_charset: "digits"         # "digits" | "hex" | "alnum"
+      needle_prefix: "PASSKEY="
+      query: "What is the passkey?"
+      answer_format: "raw_key"      # expect model to output just the key
+      case_sensitive: true
+
+    context_construction:
+      filler_source: "synthetic"    # "synthetic" or "dataset"
+      synthetic:
+        vocab: "lorem"              # "lorem" or "random_ascii"
+        sentence_len_tokens: 24
+        separator: "\n"
+      insertion:
+        position: "uniform_random"  # "front" | "middle" | "back" | "uniform_random"
+      template_version: "v1"        # bump if you change prompt formatting
+
+  decoding:
+    max_new_tokens: 32
+    stop_on_eos: true
+
+  runtime:
+    amp_autocast: true
+    warmup_trials: 2
+
+  output:
+    metrics_file: "metrics.jsonl"
+    save_prompts: false
+    save_generations: true          # saves model outputs for debugging

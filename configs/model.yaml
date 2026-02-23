@@ -1,0 +1,38 @@
+run:
+  run_name: "phase1_week1_baseline"
+  output_dir: "runs"          # scripts create runs/<run_id>/...
+  seed: 1234
+  deterministic: true         # enforce deterministic flags where possible
+  log_format: "jsonl"         # jsonl recommended
+
+hardware:
+  device: "cuda"
+  torch_compile: false        # keep off for Week 1 baseline; enable later if desired
+  compile_mode: "default"     # ignored unless torch_compile=true
+  matmul_precision: "high"    # "highest" | "high" | "medium" (torch.set_float32_matmul_precision)
+
+model:
+  name_or_path: "state-spaces/mamba2-130m-hf"   # replace with your chosen HF checkpoint
+  revision: "main"                              # or a specific commit/tag for reproducibility
+  trust_remote_code: true
+  dtype: "bf16"                                 # "bf16" or "fp16"
+  attn_implementation: null                     # keep null unless model requires overrides
+  use_cache: true                               # needed for decode timing / generate
+  max_length_hint: 32768                        # used for validation/sweeps, not a hard cap
+
+tokenizer:
+  name_or_path: null                            # null => use model.name_or_path
+  revision: null
+  use_fast: true
+  padding_side: "left"                          # often better for generation; ok either way
+  truncation_side: "left"
+
+generation:
+  do_sample: false
+  temperature: 0.0
+  top_p: 1.0
+  top_k: 0
+  num_beams: 1
+  repetition_penalty: 1.0
+  eos_token_id: null                            # null => tokenizer default
+  pad_token_id: null                            # null => tokenizer default

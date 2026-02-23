@@ -1,0 +1,29 @@
+inherits: "model.yaml"
+
+profile:
+  enabled: true
+
+  sweep:
+    seq_lens: [512, 1024, 2048, 4096, 8192, 16384]   # extend if feasible
+    batch_size: 1
+    decode_new_tokens: 256                            # fixed for decode throughput
+    prompt_style: "synthetic"                         # stable across runs
+
+  measurement:
+    warmup_iters: 5
+    measure_iters: 20
+    cuda_synchronize: true
+    reset_peak_memory_each_segment: true
+    use_torch_profiler: false                         # keep false for stable numbers
+    record_memory_stats: true
+
+  segments:
+    prefill: true
+    decode: true
+
+  runtime:
+    amp_autocast: true
+
+  output:
+    metrics_file: "metrics.jsonl"
+    save_raw_timings: true
