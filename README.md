@@ -8,6 +8,24 @@ Reproducible baseline harness for quantizing Mamba2 SSM models (Phase 1).
 # Requires Python 3.11+ and uv
 uv sync
 source .venv/bin/activate
+
+# Install lm-evaluation-harness (one-time)
+uv pip install lm-eval
+```
+
+## LM Eval Harness Benchmark
+
+Run HellaSwag, PIQA, ARC-Challenge, and WinoGrande in one shot:
+
+```bash
+bash scripts/eval_lm_harness.sh AntonV/mamba2-130m-hf
+
+# Optional knobs
+DEVICE=cuda BATCH_SIZE=8 FEWSHOT=0 \
+  bash scripts/eval_lm_harness.sh AntonV/mamba2-130m-hf
+
+# Optional extra lm_eval model args (comma-separated)
+bash scripts/eval_lm_harness.sh AntonV/mamba2-130m-hf "dtype=bfloat16,revision=main"
 ```
 
 ## Week 1 — Baseline Evaluation Commands

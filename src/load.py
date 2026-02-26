@@ -4,6 +4,7 @@ from typing import Any
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers.models.mamba2.modeling_mamba2 import Mamba2ForCausalLM
 
 from src.utils.determinism import set_global_determinism
 
@@ -66,10 +67,16 @@ def load_tokenizer_and_model(config: dict[str, Any]) -> tuple[Any, Any, dict[str
     if model_cfg.get("attn_implementation") is not None:
         model_kwargs["attn_implementation"] = model_cfg["attn_implementation"]
 
-    model = AutoModelForCausalLM.from_pretrained(
-        model_cfg["name_or_path"],
-        **model_kwargs,
-    )
+    try: 
+        model = AutoModelForCausalLM.from_pretrained(
+            model_cfg["name_or_path"],
+            **model_kwargs,
+        )
+    except:
+        model = Mamba2ForCausalLM.from_pretrained(
+            model_cfg["name_or_path"],
+            **model_kwargs,
+        )
     model.to(device)
     model.eval()
     model.config.use_cache = bool(model_cfg.get("use_cache", True))

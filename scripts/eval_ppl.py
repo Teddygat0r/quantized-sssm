@@ -3,8 +3,6 @@ from __future__ import annotations
 import argparse
 import time
 
-import torch
-
 from src.config import load_config
 from src.load import load_tokenizer_and_model
 from src.logging import JsonlLogger, build_run_id, prepare_run_dir, runtime_metadata, write_resolved_config

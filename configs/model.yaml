@@ -12,7 +12,7 @@ hardware:
   matmul_precision: "high"    # "highest" | "high" | "medium" (torch.set_float32_matmul_precision)
 
 model:
-  name_or_path: "state-spaces/mamba2-130m-hf"   # replace with your chosen HF checkpoint
+  name_or_path: "state-spaces/mamba2-130m"   # replace with your chosen HF checkpoint
   revision: "main"                              # or a specific commit/tag for reproducibility
   trust_remote_code: true
   dtype: "bf16"                                 # "bf16" or "fp16"
@@ -21,7 +21,7 @@ model:
   max_length_hint: 32768                        # used for validation/sweeps, not a hard cap
 
 tokenizer:
-  name_or_path: null                            # null => use model.name_or_path
+  name_or_path: "EleutherAI/gpt-neox-20b"                            # null => use model.name_or_path
   revision: null
   use_fast: true
   padding_side: "left"                          # often better for generation; ok either way
